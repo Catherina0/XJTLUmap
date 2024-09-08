@@ -56,13 +56,13 @@
     <div id="message"></div>
 
     <script>
-        // Affine transformation coefficients
-        const a = 0.000005353;
-        const b = -0.000000725;
-        const c = 121.159603;
-        const d = -0.000000135;
-        const e = -0.000004959;
-        const f = 31.490984;
+        // Updated affine transformation coefficients
+        const a = 0.000005088;
+        const b = 0;
+        const c = 121.148772;
+        const d = 0;
+        const e = -0.000004938;
+        const f = 31.486141;
 
         // Image dimensions
         const imageWidth = 2572;
@@ -70,8 +70,8 @@
 
         function lonLatToPixel(lon, lat) {
             // Inverse of the affine transformation
-            const x = (lon - c - b * (lat - f) / e) / (a - b * d / e);
-            const y = (lat - f - d * x) / e;
+            const x = (lon - c) / a;
+            const y = (lat - f) / e;
             return { x, y };
         }
 
@@ -130,8 +130,8 @@
         /*
         const testPosition = {
             coords: {
-                longitude: 121.165288,
-                latitude: 31.486200
+                longitude: 121.154744,
+                latitude: 31.482953
             }
         };
         showPosition(testPosition);
