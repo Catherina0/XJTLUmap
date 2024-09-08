@@ -30,6 +30,20 @@
             border-radius: 50%;
             transform: translate(-50%, -50%);
         }
+
+        #message, #coordinates {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        #message {
+            color: red;
+            font-weight: bold;
+        }
+
+        #coordinates {
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
@@ -38,6 +52,8 @@
         <div id="map"></div>
         <div class="marker" id="marker"></div>
     </div>
+    <div id="coordinates"></div>
+    <div id="message"></div>
 
     <script>
         // Affine transformation coefficients
@@ -59,40 +75,59 @@
             return { x, y };
         }
 
+        function isWithinBounds(x, y) {
+            return x >= 0 && x <= imageWidth && y >= 0 && y <= imageHeight;
+        }
+
         function showPosition(position) {
             const lon = position.coords.longitude;
             const lat = position.coords.latitude;
             
             const pixel = lonLatToPixel(lon, lat);
             const marker = document.getElementById('marker');
+            const message = document.getElementById('message');
+            const coordinates = document.getElementById('coordinates');
             
+            // Display coordinates
+            coordinates.textContent = `经度: ${lon.toFixed(6)}, 纬度: ${lat.toFixed(6)}`;
+
             // Convert pixel coordinates to percentages
             const xPercent = (pixel.x / imageWidth) * 100;
             const yPercent = (pixel.y / imageHeight) * 100;
             
-            marker.style.left = xPercent + '%';
-            marker.style.top = yPercent + '%';
+            if (isWithinBounds(pixel.x, pixel.y)) {
+                marker.style.left = xPercent + '%';
+                marker.style.top = yPercent + '%';
+                marker.style.display = 'block';
+                message.textContent = '';
+            } else {
+                marker.style.display = 'none';
+                message.textContent = '超出区域';
+            }
         }
 
         function showError(error) {
+            const message = document.getElementById('message');
+            const coordinates = document.getElementById('coordinates');
+            coordinates.textContent = '';
             switch(error.code) {
                 case error.PERMISSION_DENIED:
-                    alert("用户拒绝了请求地理定位。");
+                    message.textContent = "用户拒绝了请求地理定位。";
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    alert("位置信息不可用。");
+                    message.textContent = "位置信息不可用。";
                     break;
                 case error.TIMEOUT:
-                    alert("请求超时。");
+                    message.textContent = "请求超时。";
                     break;
                 case error.UNKNOWN_ERROR:
-                    alert("发生未知错误。");
+                    message.textContent = "发生未知错误。";
                     break;
             }
         }
 
         // Test
-         /*
+        /*
         const testPosition = {
             coords: {
                 longitude: 121.165288,
@@ -102,14 +137,13 @@
         showPosition(testPosition);
         */
 
-        // 生产
-
+        // Production
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
         } else {
-            alert("该浏览器不支持定位。");
+            document.getElementById('message').textContent = "该浏览器不支持定位。";
+            document.getElementById('coordinates').textContent = '';
         }
-        
     </script>
 </body>
 </html>
