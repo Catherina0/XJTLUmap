@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>校园地图</title>
@@ -24,8 +25,8 @@
 
         .marker {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             background-color: red;
             border-radius: 50%;
             transform: translate(-50%, -50%);
@@ -44,11 +45,19 @@
         #coordinates {
             font-family: monospace;
         }
+
+        i.fab {
+      font-size: 24px;
+      color: #000;
+        }
     </style>
 </head>
 <body>
     <h1>XJTLU地图</h1>
     <h2>刷新以当前位置显示</h2>
+    <a href="https://github.com/Catherina0/XJTLUmap" target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
     <div id="map-container">
         <div id="map"></div>
         <div class="marker" id="marker"></div>
@@ -139,13 +148,15 @@
         */
 
         // Production
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
         } else {
             document.getElementById('message').textContent = "该浏览器不支持定位。";
             document.getElementById('coordinates').textContent = '';
         }
+
     </script>
 </body>
-    <p>"Producted by Catherina Grace"</p>
+<p>"Producted by Catherina Grace"</p>
 </html>
