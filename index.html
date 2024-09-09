@@ -25,26 +25,14 @@
 
         .marker {
             position: absolute;
-            width: 14px;
-            height: 14px;
+            width: 10px;
+            height: 10px;
             background-color: red;
             border-radius: 50%;
             transform: translate(-50%, -50%);
         }
 
-        .arrow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-bottom: 10px solid blue;
-            transform: translate(-50%, -50%) rotate(0deg);
-        }
-
-        #message, #coordinates, #compass {
+        #message, #coordinates {
             text-align: center;
             margin-top: 10px;
         }
@@ -54,13 +42,13 @@
             font-weight: bold;
         }
 
-        #coordinates, #compass {
+        #coordinates {
             font-family: monospace;
         }
 
         i.fab {
-            font-size: 24px;
-            color: #000;
+      font-size: 24px;
+      color: #000;
         }
     </style>
 </head>
@@ -69,15 +57,12 @@
     <h2>刷新以当前位置显示</h2>
     <a href="https://github.com/Catherina0/XJTLUmap" target="_blank">
         <i class="fab fa-github"></i>
-    </a>
+      </a>
     <div id="map-container">
         <div id="map"></div>
-        <div class="marker" id="marker">
-            <div class="arrow" id="arrow"></div>
-        </div>
+        <div class="marker" id="marker"></div>
     </div>
     <div id="coordinates"></div>
-    <div id="compass"></div>
     <div id="message"></div>
 
     <script>
@@ -151,52 +136,27 @@
             }
         }
 
-        function handleOrientation(event) {
-            const arrow = document.getElementById('arrow');
-            const compass = document.getElementById('compass');
-            let compassHeading;
-            
-            if (event.webkitCompassHeading) {
-                // For iOS devices
-                compassHeading = event.webkitCompassHeading;
-            } else if (event.alpha !== null) {
-                // For Android devices
-                compassHeading = event.alpha; // Use raw alpha value
-            } else {
-                compass.textContent = "无法获取方向信息";
-                return;
+        // Test
+        /*
+        const testPosition = {
+            coords: {
+                longitude: 121.154744,
+                latitude: 31.482953
             }
+        };
+        showPosition(testPosition);
+        */
 
-            // Rotate the arrow based on map orientation
-            arrow.style.transform = `translate(-50%, -50%) rotate(${90 - compassHeading}deg)`;
+        // Production
 
-            // Display compass heading
-            compass.textContent = `方向: ${Math.round(compassHeading)}°`;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            document.getElementById('message').textContent = "该浏览器不支持定位。";
+            document.getElementById('coordinates').textContent = '';
         }
 
-        // Start geolocation and orientation tracking
-        function startTracking() {
-            if (navigator.geolocation) {
-                navigator.geolocation.watchPosition(showPosition, showError, {
-                    enableHighAccuracy: true,
-                    timeout: 5000,
-                    maximumAge: 0
-                });
-            } else {
-                document.getElementById('message').textContent = "该浏览器不支持定位。";
-                document.getElementById('coordinates').textContent = '';
-            }
-
-            if (window.DeviceOrientationEvent) {
-                window.addEventListener('deviceorientation', handleOrientation);
-            } else {
-                document.getElementById('compass').textContent = "该设备不支持方向感应。";
-            }
-        }
-
-        // Start tracking when the page loads
-        window.onload = startTracking;
     </script>
 </body>
-<p>"Produced by Catherina Grace"</p>
+<p>Producted by Catherina Grace</p>
 </html>
