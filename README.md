@@ -8,7 +8,7 @@
 
 - **Catherina Grace**  
   - GitHub: [@catherina0](https://github.com/catherina0)  
-  - Email: your.email@example.com  
+  - Email: CatherinaGrace102@gmail.com
 
 ## License
 
