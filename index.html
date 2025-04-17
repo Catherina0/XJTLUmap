@@ -56,7 +56,7 @@
     <h1>XJTLU地图</h1>
     <h2>刷新网页以当前位置显示</h2>
     <button id="refresh-button" style="padding: 8px 15px; margin: 10px; cursor: pointer;">刷新位置</button>
-    <a href="https://github.com/Catherina0/XJTLUmap" target="_blank" rel="noopener">
+    <a href="https://map.catherina.moe" target="_blank" rel="noopener">
         <i class="fab fa-github"></i>
       </a>
     <div id="map-container">
@@ -159,12 +159,7 @@
 
         // 添加刷新按钮功能
         document.getElementById('refresh-button').addEventListener('click', function() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                document.getElementById('message').textContent = "该浏览器不支持定位。";
-                document.getElementById('coordinates').textContent = '';
-            }
+            location.reload();
         });
 
     </script>
